@@ -1,8 +1,9 @@
 import '/src/stylesberanda.css';
 import { useRef } from 'react';
+import MuteButton from '/src/components/atoms/MuteButton';
 import video from '/src/assets/squid.mp4';
 
-const HeroScreen = ({ isMuted }) => {
+const HeroScreen = ({ isMuted, toggleMute }) => {
     const videoRef = useRef(null);
 
     return (
@@ -20,6 +21,7 @@ const HeroScreen = ({ isMuted }) => {
                     <button className="hero-button">Mulai</button>
                     <button className="hero-more">ⓘ Selengkapnya</button> 
                     <p className="umur"> 18+</p>
+                    <MuteButton isMuted={isMuted} toggleMute={toggleMute} /> {/* Mute button stays inside */}
                 </div> 
             </div>
         </section>
