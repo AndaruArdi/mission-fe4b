@@ -1,13 +1,19 @@
 import React, { useState } from 'react'; 
+import { Link, useNavigate } from 'react-router';
 import '/src/stylesberanda.css';
-import { Link } from 'react-router';
 import Profile from '/src/assets/pp.png';
 
 const ProfileNav = () => {
     const [isDropdownOpen, setDropdownOpen] = useState(false);
+    const navigate = useNavigate();
 
     const toggleDropdown = () => {
         setDropdownOpen(!isDropdownOpen);
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('isAuthenticated'); 
+        navigate('/'); 
     };
 
     return (
@@ -19,7 +25,7 @@ const ProfileNav = () => {
                 <div className="profile-dropdown">
                     <Link to="/profile" className="dropdown-item">Profil Saya</Link>
                     <Link to="/premium" className="dropdown-item">Subscription</Link>
-                    <Link to="/logout" className="dropdown-item">Keluar</Link>
+                    <Link to="/" button onClick={handleLogout} className="dropdown-item">Keluar</Link> 
                 </div>
             )}
         </div>

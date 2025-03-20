@@ -1,12 +1,60 @@
-import { Link } from 'react-router';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router';
 import chillLogo from '/src/assets/chill-logo.png';
 import GoogleButton from '/src/components/atoms/GoogleButton';
 import '/src/styles.css';
+
 const Form = ({ type }) => {
   const isLogin = type === 'login';
+  const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  useEffect(() => {
+    if (localStorage.getItem('isAuthenticated') === 'true') {
+      navigate('/home');
+    }
+  }, [navigate]);
+
+  const handleSubmit = () => {
+    if (isLogin) {
+      const storedUser = JSON.parse(localStorage.getItem("user"));
+      if (storedUser && storedUser.username === username && storedUser.password === password) {
+        localStorage.setItem("isAuthenticated", "true");
+        navigate("/home");
+      } else {
+        alert("Username atau kata sandi salah.");
+      }
+    } else {
+      if (!username || !password || !confirmPassword) {
+        alert("Semua kolom harus diisi.");
+        return;
+      }
+      if (password !== confirmPassword) {
+        alert("Konfirmasi kata sandi tidak cocok.");
+        return;
+      }
+      if (!isValidPassword(password)) {
+        alert(
+          "Kata sandi harus minimal 8 karakter, mengandung huruf besar, angka, dan simbol."
+        );
+        return;
+      }
+  
+      localStorage.setItem("user", JSON.stringify({ username, password }));
+      navigate("/");
+    }
+  };
+  
+  const isValidPassword = (password) => {
+    const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return regex.test(password);
+  };
+  
 
   return (
-    <form className="container">
+    <form className="container" onSubmit={(e) => e.preventDefault()}>
       <div className="screen">
         <div className="screen_title">
           <img src={chillLogo} alt="CHILL icon" className="chill-icon" />
@@ -16,17 +64,20 @@ const Form = ({ type }) => {
         <div className="screen_form">
           <div className="form_group">
             <label htmlFor="username" className="form_label">Username</label>
-            <input type="text" id="username" className="form_input" placeholder="Masukkan username" />
+            <input type="text" id="username" className="form_input" placeholder="Masukkan username"
+              value={username} onChange={(e) => setUsername(e.target.value)} />
           </div>
           <div className="form_group">
             <label htmlFor="password" className="form_label">Kata Sandi</label>
-            <input type="password" id="password" className="form_input" placeholder="Masukkan kata sandi" />
+            <input type="password" id="password" className="form_input" placeholder="Masukkan kata sandi"
+              value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
 
           {!isLogin && (
             <div className="form_group">
               <label htmlFor="confirmPassword" className="form_label">Konfirmasi Kata Sandi</label>
-              <input type="password" id="confirmPassword" className="form_input" placeholder="Masukkan konfirmasi kata sandi" />
+              <input type="password" id="confirmPassword" className="form_input" placeholder="Masukkan konfirmasi kata sandi"
+                value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
             </div>
           )}
 
@@ -43,13 +94,13 @@ const Form = ({ type }) => {
             )}
           </p>
 
-          <button className="form_button" type="button">{isLogin ? 'Masuk' : 'Daftar'}</button>
+          <button className="form_button" type="button" onClick={handleSubmit}>{isLogin ? 'Masuk' : 'Daftar'}</button>
           <p className="atau">Atau</p>
           <GoogleButton text={isLogin ? 'Masuk dengan Google' : 'Daftar dengan Google'} />
         </div>
       </div>
     </form>
   );
-}
+};
 
-export default Form
+export default Form;
