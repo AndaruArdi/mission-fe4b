@@ -20,8 +20,8 @@ const HeroScreen = ({ isMuted, toggleMute }) => {
                 <div className="button-hero"> 
                     <button className="hero-button">Mulai</button>
                     <button className="hero-more">ⓘ Selengkapnya</button> 
-                    <p className="umur"> 18+</p>
-                    <MuteButton isMuted={isMuted} toggleMute={toggleMute} /> {/* Mute button stays inside */}
+                    <p className="umur"> 18+ </p>
+                    <MuteButton isMuted={isMuted} toggleMute={toggleMute} /> 
                 </div> 
             </div>
         </section>
