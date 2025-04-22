@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { getUserByUsername, updateUser, deleteUser } from "/src/services/api/userApi";
+import ProfilePhoto from '/src/assets/pp.png';
 import "/src/stylesberanda.css";
 
 const Profile = () => {
@@ -52,7 +53,7 @@ const Profile = () => {
     const confirm = window.confirm("Apakah kamu yakin ingin menghapus akun ini?");
     if (confirm) {
       await deleteUser(user.id);
-      localStorage.clear(); // remove username, auth flags, dll.
+      localStorage.clear(); 
       alert("Akun telah dihapus.");
       navigate("/");
     }
@@ -65,7 +66,8 @@ const Profile = () => {
 
   return (
     <div className="container">
-      <h2>Profil</h2>
+      <h2>Profil Saya</h2>
+      <img className="profile-photo" src={ProfilePhoto} alt="profile-pct" />
       {user && <p><strong>Username:</strong> {user.username}</p>}
       <div className="form_group">
         <label>Kata Sandi Baru</label>
@@ -87,11 +89,11 @@ const Profile = () => {
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
       </div>
-      <button className="form_button" onClick={handleChangePassword}>
-        Ubah Kata Sandi
+      <button className="form_button2" onClick={handleChangePassword}>
+        Simpan
       </button>
       <button
-        className="form_button"
+        className="form_button3"
         onClick={handleDeleteAccount}
       >
         Hapus Akun

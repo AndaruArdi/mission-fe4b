@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { getUserByUsername, registerUser } from "/src/services/api/userApi";
+import useWatchlistStore from "/src/store/store";
 import chillLogo from "/src/assets/chill-logo.png";
 import GoogleButton from "/src/components/atoms/GoogleButton";
 import "/src/styles.css";
@@ -18,6 +19,7 @@ const Form = ({ type }) => {
     }
   }, [navigate]);
 
+  const setUserId = useWatchlistStore((state) => state.setUserId);
   const handleSubmit = async () => {
     if (isLogin) {
       const users = await getUserByUsername(username);
@@ -25,7 +27,8 @@ const Form = ({ type }) => {
       if (user && user.password === password) {
         localStorage.setItem("isAuthenticated", "true");
         localStorage.setItem("username", user.username); 
-        localStorage.setItem("userId", user.id); 
+        localStorage.setItem("userId", user.id);
+        setUserId(user.id);
         navigate("/home");
       } else {
         alert("Username atau kata sandi salah.");

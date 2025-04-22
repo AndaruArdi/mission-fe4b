@@ -2,18 +2,23 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import '/src/stylesberanda.css';
 import Profile from '/src/assets/pp.png';
+import useWatchlistStore from "/src/store/store";
 
 const ProfileNav = () => {
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     const navigate = useNavigate();
+    const resetWatchlist = useWatchlistStore((state) => state.resetWatchlist); 
 
     const toggleDropdown = () => {
         setDropdownOpen(!isDropdownOpen);
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('isAuthenticated'); 
-        navigate('/'); 
+        localStorage.removeItem('isAuthenticated');
+        localStorage.removeItem('userId'); 
+        localStorage.removeItem('username'); 
+        resetWatchlist(); // 
+        navigate('/');
     };
 
     return (
